@@ -1,0 +1,109 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background: url('sigin-up.jpg') center center fixed;
+  background-size: cover;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.sign-in-form {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #f0f0f0; /* Slightly darker white color */
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.sign-in-form h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #333333;
+}
+
+.sign-in-form img {
+  display: block;
+  margin: 0 auto;
+  margin-top: 0px;
+  width: 100px; /* Set the width to your desired size */
+  height: 100px; /* Set the height to your desired size */
+  object-fit: cover; /* Ensure the image covers the entire container */
+  border-radius: 50%; /* Make the image rounded */
+  border: 4px solid #ffffff; /* Add a white border for better visibility */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
+  margin-bottom: 15px;
+}
+
+.sign-in-form input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #495057;
+  height: 30px;
+}
+
+.sign-in-form button {
+  width: 100%;
+  padding: 8px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 5px;
+  display: block;
+}
+
+.sign-in-form button:hover {
+  background-color: #0056b3;
+}
+
+.sign-in-form a {
+  color: #007bff;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  margin-top: 5px;
+  display: block;
+  text-align: center;
+}
+
+.google-sign-in-button {
+  width: 100%;
+  padding: 8px;
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  display: block;
+  margin-top: 5px;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.signup-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  margin-left: 5px;
+}
