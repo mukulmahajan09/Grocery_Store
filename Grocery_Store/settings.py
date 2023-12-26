@@ -32,8 +32,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'store_app',
     'accounts',
+    'store_app',
+    'orders',
+    'cart',
     'phonenumber_field',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -83,21 +85,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "Grocery_Store.wsgi.application"
 
-#AUTH_USER_MODEL = 'accounts.Account'
+AUTH_USER_MODEL = 'accounts.Account'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'grocery_store',
-        'USER': 'mukul',
-        'PASSWORD': 'tigercool',
-        'HOST': 'grocery-store.cfc04omeet6q.ap-south-1.rds.amazonaws.com',
-        'PORT': '5432',  # PostgreSQL default port
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'grocery_store',
+#        'USER': 'mukul',
+#        'PASSWORD': 'tigercool',
+#        'HOST': 'grocery-store.cfc04omeet6q.ap-south-1.rds.amazonaws.com',
+#        'PORT': '5432',  # PostgreSQL default port
+#    }
+#}
 
 
 # Password validation

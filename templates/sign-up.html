@@ -20,22 +20,12 @@
           {% csrf_token %}
 
           <h1>Sign In</h1>
-          <label for="inputusername">Enter any username</label>
-          <input type="username" id="inputusername" name="username" class="form-control" placeholder="Username" required>
-
-          <label for="inputfirstname">Enter your first name</label>
+          <input type="username" id="inputusername" name="username" class="form-control" placeholder="Choose any username but it must be unique" required>
           <input type="first_name" id="inputfirstname" name="first_name" class="form-control" placeholder="First Name" required>
-
-          <label for="inputlastname">Enter your last name</label>
           <input type="last_name" id="inputlastname" name="last_name" class="form-control" placeholder="Last Name" required>
-
-          <label for="inputemailid">Enter your email id</label>
-          <input type="email" id="inputemailid" name="email" class="form-control" placeholder="Email Id" required>
-
-          <label for="inputpassword">Enter password</label>
+          <input type="email" id="inputemail" name="email" class="form-control" placeholder="Email Id" required>
+          <input type="phone_number" id="inputphonenumber" name="phone_number" class="form-control" placeholder="Mobile Number" required>
           <input type="password1" id="inputpassword" name="password1" class="form-control" placeholder="Password" required>
-
-          <label for="inputpasswordagain">Enter password again</label>
           <input type="password2" id="inputpasswordagain" name="password2" class="form-control" placeholder="Password again" required>
 
           <a href="#">Forgot password?</a>
