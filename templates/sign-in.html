@@ -2,66 +2,48 @@
 {% load static %}
 {% load socialaccount %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <title>Sign In</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{% static 'css/sigin-in.css' %}">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
-</head>
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y" style="min-height:84vh">
 
-<body>
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="sign-in-form">
-          <img src="{% static 'logo/sign-in logo.jpg' %}"
-          alt="Sign In Image">
-          <form class="sign-in-form" method="post" action="{% url 'sign-in' %}">
-          {% csrf_token %}
+<!-- ============================ COMPONENT LOGIN   ================================= -->
+	<div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+      <div class="card-body">
+      <h4 class="card-title mb-4">Sign In</h4>
+      <form class="sign-in-form" method="post" action="{% url 'sign-in' %}">
+        {% csrf_token %}
+
+          <div class="form-group">
+			 <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email Address" required >
+          </div> <!-- form-group// -->
+          <div class="form-group">
+			<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required >
+          </div> <!-- form-group// -->
           
-          <h1>Sign In</h1>
-          <label for="inputemail">Enter your email id</label>
-          <input type="email" id="inputemail" name="email" class="form-control" placeholder="email" required autofocus>
-          <label for="inputPassword">Enter your password</label>
-          <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
-
-          <a href="#">Forgot password?</a>
-          <button type="submit" class="btn btn-primary btn-sm" href="{% url 'sign-in' %}">Sign In</button>
-          <div class="signup-link">
-          
-          {% if messages %}
+          <div class="form-group">
+          	<a href="#" class="float-right">Forgot password?</a> 
+           
+          </div> <!-- form-group form-check .// -->
+          <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block" href="{% url 'sign-in' %}"> Sign In  </button>
+          </div> <!-- form-group// -->    
+      </form>
+      {% if messages %}
           <ul class="messages">
               {% for message in messages %}
               <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
               {% endfor %}
           </ul>
-          {% endif %}
+      {% endif %}
+      </div> <!-- card-body.// -->
+    </div> <!-- card .// -->
 
-          <a href="{% provider_login_url 'google' %}">Or Else Sign-In With Google</a>&nbsp;
-          
-          <p>Need an account? <a href="{% url 'sign-up' %}">Sign Up</a></p>
-          </div>
-        </form>
-        </div>
-      </div>
-    </div>
-  </div>
+     <p class="text-center mt-4">Or Else Sign In With <a href="{% provider_login_url 'google' %}">Google</a></p>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
+     <p class="text-center mt-4">Don't have account? <a href="{% url 'sign-up' %}">Sign Up</a></p>
+     <br><br>
+<!-- ============================ COMPONENT LOGIN  END.// ================================= -->
 
-</html>
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
 {% endblock %}
-
-<!--{% if user.is_authenticated %}
-          <p>Welcome, {{ user.socialaccount_set.all.0.extra_data.name }}!</p>
-
-          <a href="{% url 'account_logout' %}">Logout</a>
-
-          {% else %}
-          {% endif %}
