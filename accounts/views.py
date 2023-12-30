@@ -12,7 +12,7 @@ def store_home(request):
 def sign_in(request):
     
     if request.user.is_authenticated:
-        return redirect("store_home")
+        return redirect("home")
     
     if request.method == "POST":
         email = request.POST['email']
@@ -28,7 +28,7 @@ def sign_in(request):
 
         if user is not None:
             login(request, user)
-            return redirect("store_home")
+            return redirect("home")
             #return redirect(request.GET['next'] if 'next' in request.GET else 'account')
         else:
             messages.error(request, 'Username OR Password is incorrect')
@@ -38,7 +38,7 @@ def sign_in(request):
 def logoutUser(request):
     logout(request)
     messages.info(request, 'User was logged out!')
-    return redirect("store_home")
+    return redirect("home")
 
 
 def is_valid_password(password):
@@ -53,7 +53,7 @@ def is_valid_phone_number(phone_number):
 def sign_up(request):
 
     if request.user.is_authenticated:
-        return redirect("store_home")
+        return redirect("home")
      
     if request.method == "POST":
         username = request.POST['username']
@@ -91,16 +91,11 @@ def sign_up(request):
             elif Account.objects.filter(email=email).exists():
                 messages.error(request, 'Email already exists!')
             else:
-                print("Creating")
                 user = Account.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email,
                                                    phone_number=phone_number, password=password1)
-                print("Created")
-                print("Authenticating")
                 user = authenticate(email=email, password=password1)
-                print("Authenticate")
                 if user is not None:
                     login(request, user)
-                    print("done")
-                    return redirect("store_home")
+                    return redirect("home")
 
     return render(request, 'sign-up.html')

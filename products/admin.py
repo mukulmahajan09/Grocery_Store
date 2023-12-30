@@ -8,7 +8,7 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('category_name',)}
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('product_name','category','price','is_available','stock_quantity','created_date','modified_date')
+    list_display = ('product_name','category','original_price','discounted_price','is_available','stock_quantity','created_date','modified_date')
     prepopulated_fields = {'slug': ('product_name',)}
 
 @admin_thumbnails.thumbnail('product_images')
