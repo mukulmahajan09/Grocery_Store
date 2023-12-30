@@ -46,8 +46,9 @@ def is_valid_password(password):
     return bool(re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$', password))
 
 def is_valid_phone_number(phone_number):
-    # Phone number validation: Allow digits only and require a specific length (adjust as needed)
-    return bool(re.match(r'^\d{10}$', phone_number))
+    # Phone number validation: Allow digits and '+' symbol only and require a specific length (adjust as needed)
+    pattern = r'^\+\d{0,12}$'
+    return bool(re.match(pattern, phone_number))
 
 def sign_up(request):
 
@@ -79,6 +80,7 @@ def sign_up(request):
         if errors:
             for error in errors:
                 messages.error(request, error)
+            return render(request, 'sign-up.html')
         else:
             username= username.lower()
             first_name = first_name.title()
@@ -89,17 +91,16 @@ def sign_up(request):
             elif Account.objects.filter(email=email).exists():
                 messages.error(request, 'Email already exists!')
             else:
+                print("Creating")
                 user = Account.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email,
                                                    phone_number=phone_number, password=password1)
-                
-                # The user object is already saved to the database by create_user
-                # No need to call user.save() explicitly in this case
-                #user.save()
-
+                print("Created")
+                print("Authenticating")
                 user = authenticate(email=email, password=password1)
-
+                print("Authenticate")
                 if user is not None:
                     login(request, user)
+                    print("done")
                     return redirect("store_home")
 
     return render(request, 'sign-up.html')

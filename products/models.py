@@ -23,6 +23,7 @@ class ProductCategory(models.Model):
 class Product(models.Model):
     product_name = models.CharField(max_length=250, blank=False, null=False)
     slug = models.SlugField(max_length=500, unique=True)
+    #product_short_desc = models.TextField(blank=False, null=False)
     product_desc = models.TextField(blank=False, null=False)
     product_image = models.ImageField(upload_to='products_images/', blank=False, null=False)
     category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT)
@@ -37,3 +38,14 @@ class Product(models.Model):
                        
     def __str__(self):
         return self.product_name
+
+class ProductGallery(models.Model):
+    product = models.ForeignKey(Product, default=None, on_delete=models.CASCADE)
+    product_images = models.ImageField(upload_to='product_images/')
+
+    def __str__(self):
+        return self.product.product_name
+
+    class Meta:
+        verbose_name = 'ProductGallery'
+        verbose_name_plural = 'ProductGalleries'

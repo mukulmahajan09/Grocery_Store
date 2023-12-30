@@ -7,11 +7,14 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class MyAccountManager(BaseUserManager):
     def create_user(self, first_name, last_name, username, email, phone_number, password=None):
-        if not email:
-            raise ValueError('User must have an email address')
-
         if not username:
             raise ValueError('User must have an username')
+        
+        if not email:
+            raise ValueError('User must have an email address')
+        
+        if not phone_number:
+            raise ValueError('User must have an phone number')
 
         user = self.model(
             email = self.normalize_email(email), # make it normal email format
@@ -49,12 +52,12 @@ class Account(AbstractBaseUser):
     phone_number = PhoneNumberField(unique=True)
 
     # required
-    date_joined = models.DateTimeField(auto_now_add=True)
-    last_login = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_superadmin = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(auto_now_add=True)
+    last_login = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']

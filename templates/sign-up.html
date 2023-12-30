@@ -7,7 +7,7 @@
 <section class="section-content padding-y">
 
 	<!-- ============================ COMPONENT REGISTER   ================================= -->
-	<div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+	<div class="card mx-auto" style="max-width:520px; margin-top:5px;">
 		<article class="card-body">
 			<header class="mb-4">
 				<h4 class="card-title">Sign up</h4>
@@ -37,7 +37,7 @@
 				<div class="form-group">
 					<label>Phone Number</label>
 					<input type="phone" id="inputPhoneNumber" name="phone_number" class="form-control"
-						placeholder="Phone number should be 10 digits" required>
+						placeholder="Eg: +910123456789 Format: +Country Code and Number" required>
 				</div> <!-- form-group end.// -->
 				<div class="form-row">
 					<div class="form-group col-md-6">
@@ -64,17 +64,16 @@
 						placeholder="" required>
 				</div> <!-- form-group end.// -->
 
-				{% if messages %}
+				<div class="form-group text-center">
+				<button type="submit" class="btn btn-primary btn-md mx-auto d-block" href="{% url 'sign-up' %}">Sign Up</button>
+				</div> <!-- form-group// -->
+			</form>
+			{% if messages %}
 				<ul class="messages">
 				{% for message in messages %}
 				<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
 				{% endfor %}
-				{% endif %}
-
-				<div class="form-group">
-				<button type="submit" class="btn btn-primary btn-block" href="{% url 'sign-up' %}">Sign Up</button>
-				</div> <!-- form-group// -->
-			</form>
+			{% endif %}
 			</ul>
 		</article><!-- card-body.// -->
 	</div> <!-- card .// -->
