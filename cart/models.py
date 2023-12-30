@@ -7,7 +7,7 @@ class Cart(models.Model):
     date_added = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.id
+        return str(self.pk)
     
 class CartItem(models.Model):
     user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
@@ -21,4 +21,4 @@ class CartItem(models.Model):
         return self.product.discounted_price * self.quantity
 
     def __unicode__(self):
-        return self.product
+        return str(self.product)
