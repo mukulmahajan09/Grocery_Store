@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('store_app.urls')),
     path('users_accounts/', include('accounts.urls')), # user model
     path('accounts/', include('allauth.urls')), # google default dont change
+    path('cart/', include('cart.urls')),
 
     #path('reset_password/', auth_views.PasswordResetView.as_view(template_name="reset_password.html"),
     #     name="reset_password"),
