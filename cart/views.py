@@ -35,25 +35,45 @@ def _cart_id(request):
         cart = request.session.create()
     return cart
 
-def add_cart(request, product_id): #1
-
-    product = get_object_or_404(Product, pk=product_id) #1 match
+def add_cart(request, product_id):
+    product = Product.objects.get(id=product_id)
 
     try:
-        if request.user.is_authenticated: 
-           cart_item = CartItem.objects.get_or_create(user=request.user) 
-        else:
-            # user is not authenticated, in this we can rely on the session id
-            cart = Cart.objects.get_or_create(cart_id=_cart_id(request))
-            cart_item = CartItem.objects.get_or_create(product=product, cart=cart) 
- 
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+    except Cart.DoesNotExist:
+        cart = Cart.objects.create(
+            cart_id = _cart_id(request)
+        )
+
+    cart.save()
+
+    try:
+        cart_item = CartItem.objects.get(product=product, cart=cart)
         cart_item.quantity += 1
         cart_item.save()
-    
-    except:
-        pass
-
+    except CartItem.DoesNotExist:
+        cart_item = CartItem.objects.create(
+            product=product,
+            quantity=1,
+            cart=cart,
+        )
+        cart_item.save()
     return redirect('cart')
+
+    #product = get_object_or_404(Product, pk=product_id)
+#
+    #try:
+    #    cart_item = CartItem.objects.get(product=product, user=request.user, is_active=True)  # Check for existing cart item
+    #    cart_item.quantity += 1
+    #except ObjectDoesNotExist:
+    #    if request.user.is_authenticated:
+    #        cart_item = CartItem.objects.create(user=request.user, product=product)  # Create cart item for authenticated user
+    #    else:
+    #        cart = Cart.objects.get_or_create(cart_id=_cart_id(request))
+    #        cart_item = CartItem.objects.create(product=product, cart=cart)  # Create cart item for anonymous user
+#
+    #cart_item.save()
+    #return redirect('cart')
 
 def remove_cart(request, product_id, cart_item_id):
 
