@@ -133,11 +133,11 @@
 					{% for product in products %}
 					<div class="col-md-4">
 						<figure class="card card-product-grid">
-							<div class="img-wrap">
-
-								<img src="{{ product.product_image.url }}">
-
-							</div> <!-- img-wrap.// -->
+							<a href="{{ product.get_url }}">
+								<div class="img-wrap">
+									<img src="{{ product.product_image.url }}">
+								</div> <!-- img-wrap.// -->
+							</a>
 							<figcaption class="info-wrap">
 								<div class="fix-height">
 									<a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
@@ -146,11 +146,7 @@
 										<del class="price-original">₹{{ product.original_price }}</del>
 									</div> <!-- price-wrap.// -->
 								</div>
-								{% if not cart_item in cart_items %}
-								<a href="#" class="btn btn-block btn-primary">Add to cart</a>
-								{% else %}
-								<a href="#" class="btn btn-block btn-success">View Details</a>
-								{% endif %}
+								<a href="{{ product.get_url }}" class="btn btn-block btn-primary">View Details</a>
 							</figcaption>
 						</figure>
 					</div> <!-- col.// -->

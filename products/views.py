@@ -2,7 +2,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.db import models
+
+from cart.views import _cart_id
 from .models import Product, ProductCategory, ProductGallery
+from cart.models import CartItem
 from django.db.models import Q
 
 
@@ -28,6 +31,7 @@ def product_display(request, category_slug=None):
 def product_details(request, category_slug, product_slug):
     try:
         single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
+        in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=single_product).exists()
     except Exception as e:
         raise e
     
@@ -37,6 +41,7 @@ def product_details(request, category_slug, product_slug):
     context = {
         'single_product': single_product,
         'product_gallery': product_gallery,
+        'in_cart': in_cart,
     }
 
     return render(request, 'product-details.html', context)

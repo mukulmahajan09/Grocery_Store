@@ -18,9 +18,10 @@
 <ul class="thumb">
 	<li>
 		<a href="{{ single_product.product_image.url }}" target="mainImage"><img src="{{ single_product.product_image.url }}" alt="Product Images"></a>
+
 		{% for i in product_gallery %}
 		<a href="{{ i.product_images.url }}" target="mainImage"><img src="{{ i.product_images.url }}" alt="Product Images"></a>
-		{% endfor %}s
+		{% endfor %}
 	</li>
 </ul>
 </aside>
@@ -86,7 +87,11 @@
 	{% if single_product.stock_quantity <= 0 %}
 	<h5 class="text-danger">Out of Stock</h5>
 	{% else %}
-	<a href="{% url 'add_to_cart' single_product.id %}" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+		{% if in_cart %}
+		<a href="{% url 'display_cart' %}" class="btn  btn-primary"> <span class="text">Already added! Go to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+			{% else %}
+				<a href="{% url 'add_to_cart' single_product.id %}" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+		{% endif %}
 	{% endif %}
 </article> <!-- product-info-aside .// -->
 		</main> <!-- col.// -->

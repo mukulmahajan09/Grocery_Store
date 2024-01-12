@@ -1,5 +1,5 @@
 from django.db import models
-from products.models import Product
+from products.models import Product, ProductCategory
 from accounts.models import Account
 
 # Create your models here.
@@ -20,6 +20,9 @@ class CartItem(models.Model):
 
     def sub_total(self):
         return self.product.discounted_price * self.quantity
+    
+    def __str__(self):
+        return str(self.product.product_name)
 
     def __unicode__(self):
         return str(self.product)
