@@ -2,9 +2,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.db import models
-from products.models import Product, ProductCategory, ProductGallery
 from django.db.models import Q
-
+from products.models import Product, ProductCategory, ProductGallery
 
 def store(request):
     products = Product.objects.all().filter(is_available=True)

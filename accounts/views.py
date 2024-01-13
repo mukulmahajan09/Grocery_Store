@@ -162,7 +162,7 @@ def forgot_password(request):
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
 
-            messages.success(request, 'Password reset email has been sent to your email address.')
+            messages.success(request, 'We have sent you an email to reset your password!')
             return redirect('sign-in')
         else:
             messages.error(request, 'Account does not exist!')
