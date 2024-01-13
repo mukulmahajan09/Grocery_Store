@@ -151,13 +151,6 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_PORT = 587
-#EMAIL_USE_TLS = True
-#EMAIL_HOST_USER = 'socoo0334@gmail.com'
-#EMAIL_HOST_PASSWORD = 'socool3456@$'
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -204,3 +197,17 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
     # ...
 ]
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
+
+
+# SMTP configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True  # Set to False if your SMTP server doesn't use TLS
+EMAIL_HOST_USER = 'mukulcool0911@gmail.com'
+EMAIL_HOST_PASSWORD = 'ypet ocnz tnxb xdsr'

@@ -32,7 +32,7 @@ def display_cart(request, total=0, quantity=0, cart_items=None):
         'grand_total': grand_total,
     }
 
-    return render(request, 'cart.html', context)
+    return render(request, 'cart/cart.html', context)
 
 def _cart_id(request):
     cart = request.session.session_key

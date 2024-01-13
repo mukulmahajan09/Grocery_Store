@@ -15,7 +15,7 @@ def store(request):
         'product_count': product_count,
     }
 
-    return render(request, 'store.html', context)
+    return render(request, 'store/store.html', context)
 
 def search(request):
     if 'keyword' in request.GET:
@@ -29,4 +29,4 @@ def search(request):
         'product_count': product_count,
     }
 
-    return render(request, 'store.html', context)
+    return render(request, 'store/store.html', context)

@@ -5,16 +5,24 @@ from django.contrib.auth import login, authenticate, logout
 from .models import Account
 from django.contrib import messages
 from django.db import models
+from django.conf import settings
+
+# Verification email
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
+from django.core.mail import EmailMessage
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required
+
 
 def store_home(request):
     return render(request, 'index.html')
 
+
 def sign_in(request):
-    
+
     if request.user.is_authenticated:
         return redirect("home")
     
@@ -26,7 +34,7 @@ def sign_in(request):
             email = Account.objects.get(email=email)
         except Account.DoesNotExist:
             messages.error(request, 'Your account does not register with us!')
-            return render(request, 'sign-in.html')
+            return render(request, 'accounts/sign-in.html')
 
         user = authenticate(request, email=email, password=password)
 
@@ -37,7 +45,8 @@ def sign_in(request):
         else:
             messages.error(request, 'Username OR Password is incorrect')
 
-    return render(request, 'sign-in.html')
+    return render(request, 'accounts/sign-in.html')
+
 
 def logoutUser(request):
     logout(request)
@@ -49,10 +58,12 @@ def is_valid_password(password):
     # Password complexity: At least 8 characters including one uppercase, one lowercase, one digit, and one special character
     return bool(re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$', password))
 
+
 def is_valid_phone_number(phone_number):
     # Phone number validation: Allow digits and '+' symbol only and require a specific length (adjust as needed)
     pattern = r'^\+\d{0,12}$'
     return bool(re.match(pattern, phone_number))
+
 
 def sign_up(request):
 
@@ -84,7 +95,7 @@ def sign_up(request):
         if errors:
             for error in errors:
                 messages.error(request, error)
-            return render(request, 'sign-up.html')
+            return render(request, 'accounts/sign-up.html')
         else:
             username= username.lower()
             first_name = first_name.title()
@@ -97,12 +108,23 @@ def sign_up(request):
             else:
                 user = Account.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email,
                                                    phone_number=phone_number, password=password1)
-                user = authenticate(email=email, password=password1)
-                if user is not None:
-                    login(request, user)
-                    return redirect("home")
+                
+                # USER ACTIVATION
+                current_site = get_current_site(request)
+                mail_subject = 'Please activate your account'
+                message = render_to_string('accounts/account_verification_email.html', {
+                    'user': user,
+                    'domain': current_site,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': default_token_generator.make_token(user),
+                })
+                to_email = email
+                send_email = EmailMessage(mail_subject, message, to=[to_email])
+                send_email.send()
+                return redirect('/users_accounts/sign-in/?command=verification&email='+email)
 
-    return render(request, 'sign-up.html')
+    return render(request, 'accounts/sign-up.html')
+
 
 def activate(request, uidb64, token):
     try:
@@ -115,38 +137,41 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         messages.success(request, 'Congratulations! Your account is activated.')
-        return redirect('login')
+        return redirect('sign-in')
     else:
         messages.error(request, 'Invalid activation link')
-        return redirect('register')
+        return redirect('sign-up')
 
-def forgotPassword(request):
+
+def forgot_password(request):
     if request.method == 'POST':
         email = request.POST['email']
         if Account.objects.filter(email=email).exists():
             user = Account.objects.get(email__exact=email)
 
-            ## Reset password email
-            #current_site = get_current_site(request)
-            #mail_subject = 'Reset Your Password'
-            #message = render_to_string('accounts/reset_password_email.html', {
-            #    'user': user,
-            #    'domain': current_site,
-            #    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            #    'token': default_token_generator.make_token(user),
-            #})
-            #to_email = email
-            #send_email = EmailMessage(mail_subject, message, to=[to_email])
-            #send_email.send()
-#
-            #messages.success(request, 'Password reset email has been sent to your email address.')
-            #return redirect('login')
+            # Reset password email
+            current_site = get_current_site(request)
+            mail_subject = 'Reset Your Password'
+            message = render_to_string('accounts/reset_password_email.html', {
+                'user': user,
+                'domain': current_site,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            to_email = email
+            send_email = EmailMessage(mail_subject, message, to=[to_email])
+            send_email.send()
+
+            messages.success(request, 'Password reset email has been sent to your email address.')
+            return redirect('sign-in')
         else:
             messages.error(request, 'Account does not exist!')
-            return redirect('forgotPassword')
-    return render(request, 'accounts/forgotPassword.html')
+            return redirect('forgot_password')
+        
+    return render(request, 'accounts/forgot_password.html')
 
-def resetpassword_validate(request, uidb64, token):
+
+def reset_password_validate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = Account._default_manager.get(pk=uid)
@@ -156,12 +181,13 @@ def resetpassword_validate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         request.session['uid'] = uid
         messages.success(request, 'Please reset your password')
-        return redirect('resetPassword')
+        return redirect('reset_password')
     else:
         messages.error(request, 'This link has been expired!')
-        return redirect('login')
+        return redirect('sign-in')
 
-def resetPassword(request):
+
+def reset_password(request):
     if request.method == 'POST':
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
@@ -171,35 +197,44 @@ def resetPassword(request):
             user = Account.objects.get(pk=uid)
             user.set_password(password)
             user.save()
-            messages.success(request, 'Password reset successful')
-            return redirect('login')
+
+            # Send password reset confirmation email
+            mail_subject = 'Password Reset Confirmation'
+            message = 'Your password has been reset successfully. If you did not perform this action, please contact us immediately.'
+            to_email = user.email
+            send_email = EmailMessage(mail_subject, message, to=[to_email])
+            send_email.send()
+
+            messages.success(request, 'Password reset successfully')
+            return redirect('sign-in')
         else:
             messages.error(request, 'Password do not match!')
-            return redirect('resetPassword')
+            return redirect('reset_password')
     else:
-        return render(request, 'accounts/resetPassword.html')
+        return render(request, 'accounts/reset_password.html')
 
-@login_required(login_url='login')
-def change_password(request):
-    if request.method == 'POST':
-        current_password = request.POST['current_password']
-        new_password = request.POST['new_password']
-        confirm_password = request.POST['confirm_password']
 
-        user = Account.objects.get(username__exact=request.user.username)
-
-        if new_password == confirm_password:
-            success = user.check_password(current_password)
-            if success:
-                user.set_password(new_password)
-                user.save()
-                # auth.logout(request)
-                messages.success(request, 'Password updated successfully.')
-                return redirect('change_password')
-            else:
-                messages.error(request, 'Please enter valid current password')
-                return redirect('change_password')
-        else:
-            messages.error(request, 'Password does not match!')
-            return redirect('change_password')
-    return render(request, 'accounts/change_password.html')
+#@login_required(login_url='login')
+#def change_password(request):
+#    if request.method == 'POST':
+#        current_password = request.POST['current_password']
+#        new_password = request.POST['new_password']
+#        confirm_password = request.POST['confirm_password']
+#
+#        user = Account.objects.get(username__exact=request.user.username)
+#
+#        if new_password == confirm_password:
+#            success = user.check_password(current_password)
+#            if success:
+#                user.set_password(new_password)
+#                user.save()
+#                # auth.logout(request)
+#                messages.success(request, 'Password updated successfully.')
+#                return redirect('change_password')
+#            else:
+#                messages.error(request, 'Please enter valid current password')
+#                return redirect('change_password')
+#        else:
+#            messages.error(request, 'Password does not match!')
+#            return redirect('change_password')
+#    return render(request, 'accounts/change_password.html')
