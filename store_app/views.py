@@ -17,6 +17,7 @@ def store(request):
 
     return render(request, 'store/store.html', context)
 
+
 def search(request):
     if 'keyword' in request.GET:
         keyword = request.GET['keyword']

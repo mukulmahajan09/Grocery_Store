@@ -136,7 +136,7 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        messages.success(request, 'Congratulations! Your account is activated.')
+        messages.success(request, 'Congratulations! Your account is activated. Please Sign In')
         return redirect('sign-in')
     else:
         messages.error(request, 'Invalid activation link')
@@ -193,20 +193,23 @@ def reset_password(request):
         confirm_password = request.POST['confirm_password']
 
         if password == confirm_password:
-            uid = request.session.get('uid')
-            user = Account.objects.get(pk=uid)
-            user.set_password(password)
-            user.save()
-
-            # Send password reset confirmation email
-            mail_subject = 'Password Reset Confirmation'
-            message = 'Your password has been reset successfully. If you did not perform this action, please contact us immediately.'
-            to_email = user.email
-            send_email = EmailMessage(mail_subject, message, to=[to_email])
-            send_email.send()
-
-            messages.success(request, 'Password reset successfully')
-            return redirect('sign-in')
+            if not is_valid_password(password):
+                messages.error('Password must contain at least 8 characters including one uppercase, one lowercase, one digit, and one special character!')
+            else:
+                uid = request.session.get('uid')
+                user = Account.objects.get(pk=uid)
+                user.set_password(password)
+                user.save()
+    
+                # Send password reset confirmation email
+                mail_subject = 'Password Reset Confirmation'
+                message = 'Your password has been reset successfully. If you did not perform this action, please contact us immediately.'
+                to_email = user.email
+                send_email = EmailMessage(mail_subject, message, to=[to_email])
+                send_email.send()
+    
+                messages.success(request, 'Password reset successfully')
+                return redirect('sign-in')
         else:
             messages.error(request, 'Password do not match!')
             return redirect('reset_password')

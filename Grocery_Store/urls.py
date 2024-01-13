@@ -20,9 +20,11 @@ from django.contrib.auth import views as auth_views
 
 from django.conf.urls.static import static
 from django.conf import settings
+from django.utils.translation import gettext_lazy
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('kroger_secure_sign_in/', admin.site.urls),
     path('', include('store_app.urls')),
     path('users_accounts/', include('accounts.urls')), # user model
     path('accounts/', include('allauth.urls')), # google default dont change
