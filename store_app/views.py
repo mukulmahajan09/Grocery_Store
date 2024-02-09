@@ -39,20 +39,10 @@ def dashboard(request):
     # show total orders so far
     # count
 
-    userprofile = UserProfile.objects.get(user=request.user.id)
+    userprofile = get_object_or_404(UserProfile, user=request.user.id)
 
     context = {
         'userprofile': userprofile
     }
 
     return render(request, 'store/dashboard.html', context)
-
-def user_profile(request):
-    if request.is_authenticated:
-        user = UserProfile.objects.get(user=request.user.id)
-
-        context = {
-        'user': user
-    }
-
-    return render(request, 'store/user_profile.html', context)
