@@ -1,11 +1,12 @@
 # Create your views here.
 import re
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from .models import Account
+from .models import Account, UserProfile
 from django.contrib import messages
 from django.db import models
 from django.conf import settings
+from .forms import UserForm, UserProfileForm
 
 # Verification email
 from django.contrib.sites.shortcuts import get_current_site
@@ -18,7 +19,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def store_home(request):
-    return render(request, 'index.html')
+    return render(request, 'base.html')
 
 
 def sign_in(request):
@@ -241,3 +242,31 @@ def reset_password(request):
 #            messages.error(request, 'Password does not match!')
 #            return redirect('change_password')
 #    return render(request, 'accounts/change_password.html')
+    
+
+@login_required(login_url = 'sign-in')
+def edit_user_profile(request):
+    #user = get_object_or_404(Account, pk=request.user.id)
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        user_profile_form  = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+
+        email = request.POST['email']
+        phone_number = request.POST['phone_number']
+
+        if user_profile_form.is_valid():
+            user_profile_form.save()
+            messages.success(request, 'Your profile has been updated.')
+            return redirect('edit_profile')
+    else:
+        user_profile_form  = UserProfileForm(instance=user_profile)
+
+    context = {
+        'user': 'user',
+        'user_profile': 'user_profile',
+        'user_profile_form': 'user_profile_form',
+    }
+
+    return render(request, 'accounts/edit_profile.html', context)

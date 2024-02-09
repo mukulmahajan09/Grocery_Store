@@ -43,6 +43,7 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
     
+    
 # override the user model authentication
 class Account(AbstractBaseUser):
     first_name = models.CharField(max_length=50)
@@ -76,6 +77,7 @@ class Account(AbstractBaseUser):
     def has_module_perms(self, add_label):
         return True
     
+
 class UserProfile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
     profile_picture = models.ImageField(blank=True, upload_to='profile_picture/')

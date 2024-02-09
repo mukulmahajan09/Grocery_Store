@@ -16,7 +16,7 @@
               <i class="fa fa-bars"></i> All category
             </button>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="{% url 'store' %}">All Products </a>
+              <a class="dropdown-item" href="{% url 'store' %}">All Products</a>
               {% for category in links %}
               <a class="dropdown-item" href="{{ category.get_url }}">{{ category.category_name }}</a>
               {% endfor %}
@@ -42,8 +42,16 @@
             <div class="widget-header">
               {% if user.is_authenticated %}
               <div class="title mb-2">Welcome <span class="font-weight-bold">{{ user.first_name }}</span>!</div>
-              <button type="button" class="btn btn-outline-danger"
-                onclick="location.href='{% url 'logout' %}'">Logout</button>
+              <div class="category-wrap dropdown d-inline-block">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                  Menu
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                </div>
+              </div> <!-- dashboard dropdown.// -->
               {% else %}
               <div class="title mb-2">Welcome <span class="font-weight-bold">Guest</span>!</div>
               <div>

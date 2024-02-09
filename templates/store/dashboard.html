@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="section-conten padding-y bg">
+
+	{% include 'includes/alerts.html' %}
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+
+			<main class="col-lg-10">
+				<div class="card">
+					<div class="card-header bg-primary text-white">
+						<div class="d-flex justify-content-between align-items-center">
+							<h4 class="mb-0">Welcome, <span class="text-light">{{ user.full_name }}</span>!</h4>
+							<div class="ml-2">
+								<a href="{% url 'edit_user_profile' %}" class="btn btn-light btn-md rounded-pill">Edit Profile</a>
+							</div>
+							<div class="ml-auto">
+								<p class="mb-0 text-white">Last Login: {{ user.last_login|date:'F d, Y H:i:s' }}</p>
+							</div>
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="row">
+
+							<div class="col-md-6">
+								<div class="card text-center shadow-sm">
+									<div class="card-body">
+										<h5 class="card-title mb-4">Total Orders</h5>
+										<p class="card-text h2 font-weight-bold"></p>
+										<a href="#" class="btn btn-primary btn-lg mt-3">View
+											Orders</a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="card text-center shadow-sm">
+									<div class="card-body">
+										<p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
+										<p class="mb-1"><strong>Phone:</strong> {{ user.phone_number }}</p>
+										<p class="mb-1"><strong>Address:</strong> {{ user.address }}</p>
+										<p class="mb-1"><strong>Joined:</strong> {{ user.date_joined|date:'F Y' }}</p>
+									</div>
+								</div>
+							</div>
+
+						</div> <!-- row.// -->
+					</div> <!-- card-body .// -->
+				</div> <!-- card.// -->
+
+				<!-- Additional Sections and Widgets -->
+				<section class="mt-4">
+					<h2 class="mb-3">Your Recent Orders</h2>
+					<!-- Add a stylish list or table to display recent orders -->
+				</section>
+
+				<section class="mt-4">
+					<h2 class="mb-3">Product Recommendations</h2>
+					<!-- Add a modern carousel or grid for recommended products -->
+				</section>
+
+				<!-- Add more sections and widgets as needed -->
+
+			</main>
+		</div> <!-- row.// -->
+	</div>
+
+</section>
+
+{% endblock %}

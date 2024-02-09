@@ -27,7 +27,7 @@ def product_display(request, category_slug=None):
         'product_count': product_count,
     }
 
-    return render(request, 'index.html', context)
+    return render(request, 'base.html', context)
 
 
 def product_details(request, category_slug, product_slug):

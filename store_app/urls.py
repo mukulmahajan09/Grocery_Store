@@ -5,4 +5,5 @@ urlpatterns = [
     path('', include('products.urls')),
     path('store/', views.store, name='store'),
     path('search/', views.search, name='search'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 ]
