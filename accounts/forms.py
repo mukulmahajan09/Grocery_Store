@@ -28,7 +28,7 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ('profile_picture', 'shipping_address', 'billing_address', 'city', 'pincode', 'state', 'country')
+        fields = ('profile_picture',)
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)

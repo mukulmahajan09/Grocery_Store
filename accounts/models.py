@@ -4,7 +4,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 # Create your models here.
-
 class MyAccountManager(BaseUserManager):
     def create_user(self, first_name, last_name, username, email, phone_number, password=None):
         if not username:
@@ -49,7 +48,7 @@ class Account(AbstractBaseUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(max_length=100, unique=True)
+    email = models.EmailField(max_length=50, unique=True)
     phone_number = PhoneNumberField(unique=True)
 
     # required
@@ -78,15 +77,23 @@ class Account(AbstractBaseUser):
         return True
     
 
+class UserAddress(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    phone_number = PhoneNumberField()
+    email = models.EmailField(max_length=50)
+    address_line_1 = models.TextField()
+    address_line_2 = models.TextField()
+    pincode = models.IntegerField()
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
     profile_picture = models.ImageField(blank=True, upload_to='profile_picture/')
-    shipping_address = models.TextField(blank=True, null=True)
-    billing_address = models.TextField(blank=True, null=True)
-    city = models.CharField(blank=True, max_length=50)
-    pincode = models.IntegerField(blank=True, null=True)
-    state = models.CharField(blank=True, max_length=50)
-    country = models.CharField(blank=True, max_length=50)
+    address = models.ForeignKey(UserAddress, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.user.first_name
