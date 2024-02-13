@@ -77,23 +77,22 @@ class Account(AbstractBaseUser):
         return True
     
 
-class UserAddress(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    phone_number = PhoneNumberField()
-    email = models.EmailField(max_length=50)
-    address_line_1 = models.TextField()
-    address_line_2 = models.TextField()
-    pincode = models.IntegerField()
-    city = models.CharField(max_length=50)
-    state = models.CharField(max_length=50)
-    country = models.CharField(max_length=50)
-
-
 class UserProfile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
     profile_picture = models.ImageField(blank=True, upload_to='profile_picture/')
-    address = models.ForeignKey(UserAddress, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.user.first_name
+    
+
+class UserAddress(models.Model):
+    user_address = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=True, null=True)
+    full_name = models.CharField(max_length=100)
+    phone_number = PhoneNumberField()
+    email = models.EmailField(max_length=50)
+    address_line_1 = models.TextField()
+    address_line_2 = models.TextField(blank=True)
+    pincode = models.IntegerField()
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    country = models.CharField(max_length=50, default="INDIA")
