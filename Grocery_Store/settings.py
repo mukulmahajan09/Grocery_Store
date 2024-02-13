@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+import environ
+
+env = environ.Env()
+# Load the .env file
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-ne*qqgd2ongkk6f&hu^ixe%*5+rcb8zv6@jh6ovn=+r()p4s6("
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -99,6 +104,8 @@ AUTH_USER_MODEL = 'accounts.Account'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
+# SQLlite DATABASES configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -106,14 +113,15 @@ DATABASES = {
     }
 }
 
+# Add PostgreSQL DATABASES configuration
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'grocery_store',
-#        'USER': 'mukul',
-#        'PASSWORD': 'tigercool',
-#        'HOST': 'grocery-store.cfc04omeet6q.ap-south-1.rds.amazonaws.com',
-#        'PORT': '5432',  # PostgreSQL default port
+#        'NAME': os.environ.get('NAME'),
+#        'USER': os.environ.get('USER'),
+#        'PASSWORD': os.environ.get('PASSWORD'),
+#        'HOST': os.environ.get('HOST'),
+#        'PORT': '5432',
 #    }
 #}
 
@@ -212,8 +220,8 @@ MESSAGE_TAGS = {
 
 # SMTP configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True  # Set to False if your SMTP server doesn't use TLS
-EMAIL_HOST_USER = 'mukulcool0911@gmail.com'
-EMAIL_HOST_PASSWORD = 'ypet ocnz tnxb xdsr'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')  # Set to False if your SMTP server doesn't use TLS
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
