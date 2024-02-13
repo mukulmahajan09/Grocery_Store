@@ -1,0 +1,1 @@
+This project is an E-commerce website for the Kroger grocery store, offering a convenient platform for users to browse and purchase grocery items online. Built using Python and Django, this web application provides a seamless shopping experience with features like user authentication, product catalog, shopping cart, and checkout functionality.
